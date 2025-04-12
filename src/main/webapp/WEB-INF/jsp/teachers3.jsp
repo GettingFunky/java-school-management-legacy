@@ -1,22 +1,9 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Προβολή Καθηγητών</title>
+<c:set var="pageTitle" value="Προβολή Καθηγητών" />
+<%@ include file="header3.jsp" %>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-<%@ include file="header3.jsp"%>
 <main class="flex-grow container mx-auto px-4 py-8">
 
     <!-- Page Header -->
@@ -39,7 +26,8 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-8">
         <div class="p-6">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Αναζήτηση Καθηγητών</h2>
-            <form id="filterForm" method="GET" action="${pageContext.request.contextPath}/school-app/teachers/view" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <form id="filterForm" method="GET" action="${pageContext.request.contextPath}/school-app/teachers/view"
+                  class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                     <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Όνομα</label>
                     <input type="text" name="firstname" id="firstname" placeholder="Όνομα"
@@ -71,52 +59,52 @@
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Κωδικος</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ονομα</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Επωνυμο</th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Πραξεις</th>
-                    </tr>
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Κωδικος</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ονομα</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Επωνυμο</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Πραξεις</th>
+                </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <c:choose>
-                        <c:when test="${not empty requestScope.teachers}">
-                            <c:forEach var="teacher" items="${requestScope.teachers}">
-                                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${teacher.id}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.firstname}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.lastname}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                                        <div class="flex justify-end space-x-3">
-                                            <a href="${pageContext.request.contextPath}/school-app/teachers/show?id=${teacher.id}"
-                                               class="text-primary-500 hover:text-primary-600 p-1 rounded-full hover:bg-primary-50 transition-colors duration-200"
-                                               title="Προβολή">
-                                                <i class="fas fa-eye w-5 h-5"></i>
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/school-app/teachers/update?id=${teacher.id}"
-                                               class="text-warning-500 hover:text-warning-600 p-1 rounded-full hover:bg-warning-50 transition-colors duration-200"
-                                               title="Επεξεργασία">
-                                                <i class="fas fa-pen-to-square w-5 h-5"></i>
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/school-app/teachers/delete?id=${teacher.id}"
-                                               onclick="return confirm('Είστε βέβαιοι ότι θέλετε να διαγράψετε τον καθηγητή;')"
-                                               class="text-danger-500 hover:text-danger-600 p-1 rounded-full hover:bg-danger-50 transition-colors duration-200"
-                                               title="Διαγραφή">
-                                                <i class="fas fa-trash-can w-5 h-5"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
-                                    Δεν βρέθηκαν καθηγητές
+                <c:choose>
+                    <c:when test="${not empty requestScope.teachers}">
+                        <c:forEach var="teacher" items="${requestScope.teachers}">
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${teacher.id}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.firstname}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${teacher.lastname}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                                    <div class="flex justify-end space-x-3">
+                                        <a href="${pageContext.request.contextPath}/school-app/teachers/show?id=${teacher.id}"
+                                           class="text-primary-500 hover:text-primary-600 p-1 rounded-full hover:bg-primary-50 transition-colors duration-200"
+                                           title="Προβολή">
+                                            <i class="fas fa-eye w-5 h-5"></i>
+                                        </a>
+                                        <a href="${pageContext.request.contextPath}/school-app/teachers/update?id=${teacher.id}"
+                                           class="text-warning-500 hover:text-warning-600 p-1 rounded-full hover:bg-warning-50 transition-colors duration-200"
+                                           title="Επεξεργασία">
+                                            <i class="fas fa-pen-to-square w-5 h-5"></i>
+                                        </a>
+                                        <a href="${pageContext.request.contextPath}/school-app/teachers/delete?id=${teacher.id}"
+                                           onclick="return confirm('Είστε βέβαιοι ότι θέλετε να διαγράψετε τον καθηγητή;')"
+                                           class="text-danger-500 hover:text-danger-600 p-1 rounded-full hover:bg-danger-50 transition-colors duration-200"
+                                           title="Διαγραφή">
+                                            <i class="fas fa-trash-can w-5 h-5"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
-                        </c:otherwise>
-                    </c:choose>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                                Δεν βρέθηκαν καθηγητές
+                            </td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
                 </tbody>
             </table>
         </div>
@@ -136,7 +124,3 @@
 </main>
 
 <%@ include file="footer2.jsp"%>
-
-<script src="${pageContext.request.contextPath}/js/teachers.js"></script>
-</body>
-</html>

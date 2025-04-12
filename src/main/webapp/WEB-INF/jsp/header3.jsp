@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><c:out value="${pageTitle}" default="School App" /></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,31 +31,30 @@
                             600: '#dc2626'
                         }
                     }
-
                 }
             }
         }
     </script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <header class="bg-primary-800">
     <div class="container mx-auto px-4">
-        <!-- Main header content -->
         <div class="flex items-center justify-between py-3">
-            <!-- Logo and title -->
             <div class="flex items-center space-x-4">
                 <a href="${pageContext.request.contextPath}">
                     <img class="h-10 w-auto"
                          src="${pageContext.request.contextPath}/img/gov_header_logo.svg"
                          alt="Government Logo"
-                         style="filter: brightness(0) invert(1)"> <!-- Ensures white logo visibility -->
+                         style="filter: brightness(0) invert(1)">
                 </a>
                 <span class="text-lg font-semibold text-white hidden sm:block">
                     Coding Factory - Education Reinvented
                 </span>
             </div>
-
-            <!-- User info and logout -->
             <div class="flex items-center space-x-4">
                 <c:if test="${sessionScope.username != null}">
                     <div class="flex items-center space-x-3">
@@ -73,9 +73,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Decorative line -->
     <div class="h-0.5 bg-gradient-to-r from-blue-400 to-blue-600"></div>
 </header>
-</body>
-</html>

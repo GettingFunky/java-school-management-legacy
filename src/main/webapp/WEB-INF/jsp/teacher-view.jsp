@@ -1,14 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Προβολή Καθηγητή</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/teachers.css">
-</head>
-<body>
+<c:set var="pageTitle" value="Προβολή Καθηγητή" />
 <%@ include file="header3.jsp" %>
 
 <main class="flex-grow container mx-auto px-4 py-8">
@@ -25,12 +18,11 @@
         </div>
 
         <div class="mt-8 text-center">
-          <a href="${pageContext.request.contextPath}/school-app/teachers/view"
-             class="inline-flex items-center px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-             🔙 Επιστροφή στη Λίστα
-          </a>
-
-
+            <a href="${pageContext.request.contextPath}/school-app/teachers/view"
+               class="inline-flex items-center px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Επιστροφή στη Λίστα
+            </a>
         </div>
     </div>
 </main>
