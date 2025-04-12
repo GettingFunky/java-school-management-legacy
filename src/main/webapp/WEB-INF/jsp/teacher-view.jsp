@@ -28,5 +28,3 @@
 </main>
 
 <%@ include file="footer2.jsp" %>
-</body>
-</html>
