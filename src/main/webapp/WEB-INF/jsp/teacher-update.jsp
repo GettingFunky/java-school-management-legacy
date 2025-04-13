@@ -2,73 +2,170 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-<c:set var="pageTitle" value="Εισαγωγή Νέου Καθηγητή" />
+<c:set var="pageTitle" value="Ενημέρωση Στοιχείων Καθηγητή" />
 <%@ include file="header3.jsp" %>
 
 <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
-		<form method="POST" action="${pageContext.request.contextPath}/school-app/teachers/update">
-            <input type="hidden" name="id" value="${requestScope.updateDTO.id}" >
-            <div class="row m-bottom">
-                <div>
-                    <input class="m-bottom" type="text" name="firstname" value="${requestScope.updateDTO.firstname}" placeholder="Όνομα">
-                    <p class="validation-error">${sessionScope.firstnameMessage}</p>
-                </div>
-                <div>
-                    <input class="m-bottom" type="text" name="lastname" value="${requestScope.updateDTO.lastname}" placeholder="Επώνυμο">
-                    <p class="validation-error">${sessionScope.lastnameMessage}</p>
-                </div>
-            </div>
-            <div class="row m-bottom">
-                <input class="m-bottom" type="text" name="vat" value="${requestScope.updateDTO.vat}" placeholder="ΑΦΜ">
-                <p class="validation-error">${sessionScope.vatMessage}</p>
-                <input class="m-bottom" type="text" name="fathername" value="${requestScope.updateDTO.fatherName}" placeholder="Επώνυμο Πατρός">
-                <p class="validation-error">${sessionScope.fathernameMessage}</p>
-            </div>
-            <div class="row m-bottom">
-                <input class="m-bottom" type="text" name="phoneNum" value="${requestScope.updateDTO.phoneNum}" placeholder="Αριθμός Τηλεφώνου">
-                <p class="validation-error">${sessionScope.phoneNumMessage}</p>
-                <input class="m-bottom" type="text" name="email" value="${requestScope.updateDTO.email}" placeholder="E-mail">
-                <p class="validation-error">${sessionScope.emailMessage}</p>
-            </div>
-            <div class="row m-bottom">
-                <input class="m-bottom" type="text" name="street" value="${requestScope.updateDTO.street}" placeholder="Οδός">
-                <p class="validation-error">${sessionScope.streetMessage}</p>
-                <input class="m-bottom" type="text" name="streetNum" value="${requestScope.updateDTO.streetNum}" placeholder="Αριθμός">
-                <p class="validation-error">${sessionScope.streetNumMessage}</p>
-            </div>
-            <div class="row m-bottom">
-                <input class="m-bottom" type="text" name="zipcode" value="${requestScope.updateDTO.zipCode}" placeholder="ΤΚ">
-                <p class="validation-error">${sessionScope.zipcodeMessage}</p>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Ενημέρωση Στοιχείων Καθηγητή</h1>
 
-            <!-- City Dropdown -->
-                <select class="m-bottom" name="cityId">
-                <%-- The Select City option appears in the dropdown but cannot be chosen after a real selection is made --%>
-                    <option value="" disabled ${empty updateDTO.cityId ? 'selected' : ''}>
-                        Select City
-                    </option>
-                    <c:forEach items="${cities}" var="city">
+        <!-- Error Message -->
+        <c:if test="${not empty requestScope.errorMessage or not empty sessionScope.errorMessage}">
+            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+                <p>${fn:escapeXml(not empty requestScope.errorMessage ? requestScope.errorMessage : sessionScope.errorMessage)}</p>
+            </div>
+        </c:if>
+
+        <!-- Teacher Form -->
+        <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <form method="POST" action="${pageContext.request.contextPath}/school-app/teachers/update" class="space-y-6">
+
+                <!--Hidden ID -->
+                <input type="hidden" name="id" value="${updateDTO.id}" />
+
+                <!-- Name Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Όνομα</label>
+                        <input id="firstname" name="firstname" type="text"
+                               value="${fn:escapeXml(updateDTO.firstname)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.firstnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Όνομα">
+                        <c:if test="${not empty requestScope.firstnameMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.firstnameMessage}</p>
+                        </c:if>
+                    </div>
+                    <div>
+                        <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο</label>
+                        <input id="lastname" name="lastname" type="text"
+                               value="${fn:escapeXml(updateDTO.lastname)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.lastnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Επώνυμο">
+                        <c:if test="${not empty requestScope.lastnameMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.lastnameMessage}</p>
+                        </c:if>
+                    </div>
+                </div>
+
+                <!-- VAT and Father's Name -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="vat" class="block text-sm font-medium text-gray-700 mb-1">ΑΦΜ</label>
+                        <input id="vat" name="vat" type="text"
+                               value="${fn:escapeXml(updateDTO.vat)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.vatMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="ΑΦΜ">
+                        <c:if test="${not empty requestScope.vatMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.vatMessage}</p>
+                        </c:if>
+                    </div>
+                    <div>
+                        <label for="fathername" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο Πατρός</label>
+                        <input id="fathername" name="fathername" type="text"
+                               value="${fn:escapeXml(updateDTO.fatherName)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.fathernameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Επώνυμο Πατρός">
+                        <c:if test="${not empty requestScope.fatherNameMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.fathernameMessage}</p>
+                        </c:if>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="phoneNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός Τηλεφώνου</label>
+                        <input id="phoneNum" name="phoneNum" type="text"
+                               value="${fn:escapeXml(updateDTO.phoneNum)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.phoneNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Αριθμός Τηλεφώνου">
+                        <c:if test="${not empty requestScope.phoneNumMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.phoneNumMessage}</p>
+                        </c:if>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input id="email" name="email" type="text"
+                               value="${fn:escapeXml(updateDTO.email)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.emailMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="E-mail">
+                        <c:if test="${not empty requestScope.emailMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.emailMessage}</p>
+                        </c:if>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Οδός</label>
+                        <input id="street" name="street" type="text"
+                               value="${fn:escapeXml(updateDTO.street)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.streetMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Οδός">
+                        <c:if test="${not empty requestScope.streetMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.streetMessage}</p>
+                        </c:if>
+                    </div>
+                    <div>
+                        <label for="streetNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός</label>
+                        <input id="streetNum" name="streetNum" type="text"
+                               value="${fn:escapeXml(updateDTO.streetNum)}"
+                               class="w-full px-3 py-2 border ${not empty requestScope.streetNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Αριθμός">
+                        <c:if test="${not empty requestScope.streetNumMessage}">
+                            <p class="mt-1 text-sm text-red-600">${requestScope.streetNumMessage}</p>
+                        </c:if>
+                    </div>
+                </div>
+
+<!-- Zip Code and City -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">ΤΚ</label>
+                <input id="zipcode" name="zipcode" type="text"
+                       value="${fn:escapeXml(updateDTO.zipCode)}"
+                       class="w-full px-3 py-2 border ${not empty requestScope.zipcodeMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="ΤΚ">
+                <c:if test="${not empty requestScope.zipcodeMessage}">
+                    <p class="mt-1 text-sm text-red-600">${requestScope.zipcodeMessage}</p>
+                </c:if>
+            </div>
+            <div>
+                <label for="cityId" class="block text-sm font-medium text-gray-700 mb-1">Πόλη</label>
+                <select id="cityId" name="cityId"
+                        class="w-full px-3 py-2 border ${not empty requestScope.cityIdMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <c:forEach items="${requestScope.cities}" var="city">
                         <option value="${city.id}"
-                                ${city.id eq updateDTO.cityId ? 'selected' : ''}>
-                            ${city.name}
+                                <c:if test="${city.id == updateDTO.cityId}">selected</c:if>>
+                            ${fn:escapeXml(city.name)}
                         </option>
                     </c:forEach>
                 </select>
-                <p class="validation-error">${sessionScope.cityIdMessage}</p>
+                <c:if test="${not empty requestScope.cityIdMessage}">
+                    <p class="mt-1 text-sm text-red-600">${requestScope.cityIdMessage}</p>
+                </c:if>
             </div>
-            <div class="row">
-                <button type="submit">Εισαγωγή</button>
-            </div>
+        </div>
 
-		</form>	
-	</div>	
 
-    <div class="m-bottom">
-        <a href="${pageContext.request.contextPath}/school-app/teachers/view">Επιστροφή</a>
-    </div>
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit"
+                            class="w-full md:w-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        Ενημέρωση
+                    </button>
+                </div>
+            </form>
+        </div>
 
-    <div>
-        ${requestScope.errorMessage}
+        <!-- Back Link -->
+        <div class="text-center">
+            <a href="${pageContext.request.contextPath}/school-app/teachers/view"
+               class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">
+                Επιστροφή στη λίστα καθηγητών
+            </a>
+        </div>
     </div>
 </main>
 
