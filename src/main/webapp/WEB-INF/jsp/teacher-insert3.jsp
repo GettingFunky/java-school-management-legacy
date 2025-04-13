@@ -1,22 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Εισαγωγή Καθηγητή</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-<%@ include file="header.jsp"%>
+<c:set var="pageTitle" value="Εισαγωγή Καθηγητή" />
+<%@ include file="header3.jsp" %>
 
 <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
@@ -180,6 +167,4 @@
     </div>
 </main>
 
-<%@ include file="footer.jsp"%>
-</body>
-</html>
+<%@ include file="footer2.jsp" %>

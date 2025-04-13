@@ -79,7 +79,7 @@ public class UserRegisterController extends HttpServlet {
             //request.setAttribute("userInfo", readOnlyDTO);
             HttpSession session = request.getSession();
             session.setAttribute("userInfo", readOnlyDTO);
-//            request.getRequestDispatcher("/WEB-INF/jsp/user-registered.jsp")
+//            request.getRequestDispatcher("/WEB-INF/jsp/user-registered2.jsp")
 //                    .forward(request, response);
             // PRG Design Pattern
             response.sendRedirect(request.getContextPath() + "/school-app/user-registered");

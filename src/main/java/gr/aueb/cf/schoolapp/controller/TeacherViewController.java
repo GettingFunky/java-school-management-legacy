@@ -34,7 +34,7 @@ public class TeacherViewController extends HttpServlet {
         } catch (TeacherDAOException | TeacherNotFoundException e) {
             message = e.getMessage();
             req.setAttribute("message", message);
-            req.getRequestDispatcher("/WEB-INF/jsp/teachers.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/teachers3.jsp").forward(req, resp);
         }
     }
 }

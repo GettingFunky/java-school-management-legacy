@@ -137,7 +137,7 @@ public class TeacherUpdateController extends HttpServlet {
         } catch (TeacherDAOException | TeacherAlreadyExistsException | TeacherNotFoundException e) {
             errorMessage = e.getMessage();
             req.setAttribute("errorMessage", errorMessage);
-            req.getRequestDispatcher("/WEB-INF/jsp/teacher-insert.jsp")
+            req.getRequestDispatcher("/WEB-INF/jsp/teacher-insert3.jsp")
                     .forward(req, resp);
         }
 

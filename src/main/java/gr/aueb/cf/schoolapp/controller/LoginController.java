@@ -80,7 +80,7 @@ public class LoginController extends HttpServlet {
         } catch (UserDAOException | UserNotFoundException e) {
             //response.sendRedirect(request.getContextPath() + "/login?isError=true");
             request.setAttribute("error", "Authentication Error");
-            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/login2.jsp").forward(request, response);
         }
     }
 }

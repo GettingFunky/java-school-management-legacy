@@ -1,22 +1,12 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Teacher Update</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/teacher-update.css">
-</head>
-<body>
-<%@ include file="header.jsp"%>
-<div class="main-content">
-	<div class="form m-bottom">
+<c:set var="pageTitle" value="Εισαγωγή Νέου Καθηγητή" />
+<%@ include file="header3.jsp" %>
+
+<main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
 		<form method="POST" action="${pageContext.request.contextPath}/school-app/teachers/update">
             <input type="hidden" name="id" value="${requestScope.updateDTO.id}" >
             <div class="row m-bottom">
@@ -80,6 +70,6 @@
     <div>
         ${requestScope.errorMessage}
     </div>
-</div>
-</body>
-</html>
+</main>
+
+<%@ include file="footer2.jsp" %>

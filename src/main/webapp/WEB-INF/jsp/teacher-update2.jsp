@@ -1,31 +1,18 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Εισαγωγή Καθηγητή</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-<%@ include file="header.jsp"%>
+<c:set var="pageTitle" value="Εισαγωγή Καθηγητή" />
+<%@ include file="header3.jsp" %>
 
 <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Εισαγωγή Καθηγητή</h1>
 
         <!-- Error Message -->
-        <c:if test="${not empty requestScope.errorMessage}">
+        <c:if test="${not empty requestScope.errorMessage or not empty sessionScope.errorMessage}">
             <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
-                <p>${fn:escapeXml(requestScope.errorMessage)}</p>
+                <p>${fn:escapeXml(not empty requestScope.errorMessage ? requestScope.errorMessage : sessionScope.errorMessage)}</p>
             </div>
         </c:if>
 
@@ -37,7 +24,7 @@
                     <div>
                         <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Όνομα</label>
                         <input id="firstname" name="firstname" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.firstname)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.firstname ? requestScope.insertDTO.firstname : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.firstnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Όνομα">
                         <c:if test="${not empty requestScope.firstnameMessage}">
@@ -47,7 +34,7 @@
                     <div>
                         <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο</label>
                         <input id="lastname" name="lastname" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.lastname)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.lastname ? requestScope.insertDTO.lastname : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.lastnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Επώνυμο">
                         <c:if test="${not empty requestScope.lastnameMessage}">
@@ -61,7 +48,7 @@
                     <div>
                         <label for="vat" class="block text-sm font-medium text-gray-700 mb-1">ΑΦΜ</label>
                         <input id="vat" name="vat" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.vat)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.vat ? requestScope.insertDTO.vat : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.vatMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="ΑΦΜ">
                         <c:if test="${not empty requestScope.vatMessage}">
@@ -71,7 +58,7 @@
                     <div>
                         <label for="fathername" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο Πατρός</label>
                         <input id="fathername" name="fathername" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.fatherName)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.fatherName ? requestScope.insertDTO.fatherName : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.fathernameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Επώνυμο Πατρός">
                         <c:if test="${not empty requestScope.fathernameMessage}">
@@ -85,7 +72,7 @@
                     <div>
                         <label for="phoneNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός Τηλεφώνου</label>
                         <input id="phoneNum" name="phoneNum" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.phoneNum)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.phoneNum ? requestScope.insertDTO.phoneNum : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.phoneNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Αριθμός Τηλεφώνου">
                         <c:if test="${not empty requestScope.phoneNumMessage}">
@@ -95,7 +82,7 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
                         <input id="email" name="email" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.email)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.email ? requestScope.insertDTO.email : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.emailMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="E-mail">
                         <c:if test="${not empty requestScope.emailMessage}">
@@ -109,7 +96,7 @@
                     <div>
                         <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Οδός</label>
                         <input id="street" name="street" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.street)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.street ? requestScope.insertDTO.street : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.streetMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Οδός">
                         <c:if test="${not empty requestScope.streetMessage}">
@@ -119,7 +106,7 @@
                     <div>
                         <label for="streetNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός</label>
                         <input id="streetNum" name="streetNum" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.streetNum)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.streetNum ? requestScope.insertDTO.streetNum : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.streetNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Αριθμός">
                         <c:if test="${not empty requestScope.streetNumMessage}">
@@ -133,7 +120,7 @@
                     <div>
                         <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">ΤΚ</label>
                         <input id="zipcode" name="zipcode" type="text"
-                               value="${fn:escapeXml(requestScope.insertDTO.zipCode)}"
+                               value="${fn:escapeXml(not empty requestScope.insertDTO.zipCode ? requestScope.insertDTO.zipCode : '')}"
                                class="w-full px-3 py-2 border ${not empty requestScope.zipcodeMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="ΤΚ">
                         <c:if test="${not empty requestScope.zipcodeMessage}">
@@ -180,6 +167,4 @@
     </div>
 </main>
 
-<%@ include file="footer.jsp"%>
-</body>
-</html>
+<%@ include file="footer2.jsp" %>

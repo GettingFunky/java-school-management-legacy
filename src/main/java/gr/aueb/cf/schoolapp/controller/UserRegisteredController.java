@@ -26,6 +26,6 @@ public class UserRegisteredController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/jsp/user-registered.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/user-registered2.jsp").forward(request, response);
     }
 }
