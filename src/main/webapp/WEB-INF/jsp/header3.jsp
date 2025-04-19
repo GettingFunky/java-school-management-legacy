@@ -45,7 +45,7 @@
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between py-3">
             <div class="flex items-center space-x-4">
-                <a href="${pageContext.request.contextPath}">
+                <a href="${pageContext.request.contextPath}/school-app/dashboard">
                     <img class="h-10 w-auto"
                          src="${pageContext.request.contextPath}/img/gov_header_logo.svg"
                          alt="Government Logo"
