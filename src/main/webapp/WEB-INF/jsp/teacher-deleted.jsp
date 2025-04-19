@@ -1,26 +1,24 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Επιτυχής Εισαγωγή</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/success.css">
-</head>
-<body>
+<c:set var="pageTitle" value="Επιτυχής Διαγραφή" />
+<%@ include file="header3.jsp" %>
 
-<div class="success m-bottom">
-    <h1>Επιτυχής Διαγραφή</h1>
-    <p>Κωδικός: ${requestScope.id}</p>
-</div>
+<main class="flex-grow container mx-auto px-4 py-12">
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-md border border-success-200">
+        <div class="flex items-center mb-4">
+            <i class="fas fa-check-circle text-success-500 text-3xl mr-3"></i>
+            <h1 class="text-2xl font-bold text-gray-800">Επιτυχής Διαγραφή</h1>
+        </div>
+        <p class="text-gray-700 text-lg mb-4">Ο καθηγητής με κωδικό <strong>${requestScope.id}</strong> διαγράφηκε επιτυχώς.</p>
 
-<div>
-    <a href="${pageContext.request.contextPath}/school-app/teachers/view">Επιστροφή</a>
-</div>
-</body>
-</html>
+        <div class="flex justify-end">
+            <a href="${pageContext.request.contextPath}/school-app/teachers/view"
+               class="inline-flex items-center px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition">
+                <i class="fas fa-arrow-left mr-2"></i> Επιστροφή στην προβολή καθηγητών
+            </a>
+        </div>
+    </div>
+</main>
+
+<%@ include file="footer2.jsp"%>
