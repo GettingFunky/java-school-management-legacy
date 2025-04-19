@@ -25,6 +25,11 @@ public class TeacherDeleteController extends HttpServlet {
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
+        String role = (String) req.getSession().getAttribute("role");
+        if (!"ADMIN".equals(role)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Απαγορεύεται η πρόσβαση.");
+            return;
+        }
 
         try {
             teacherService.deleteTeacher(id);

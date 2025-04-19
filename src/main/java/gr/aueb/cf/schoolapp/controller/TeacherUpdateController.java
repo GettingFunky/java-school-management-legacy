@@ -104,6 +104,11 @@ public class TeacherUpdateController extends HttpServlet {
         try {
             // Validate dto
             errors = TeacherValidator.validate(updateDTO);
+            String role = (String) req.getSession().getAttribute("role");
+            if (!"ADMIN".equals(role)) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Απαγορεύεται η πρόσβαση.");
+                return;
+            }
 
             if (!errors.isEmpty()) {
                 firstnameMessage = errors.getOrDefault("firstname", "");

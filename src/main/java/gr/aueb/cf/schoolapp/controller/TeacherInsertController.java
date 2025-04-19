@@ -41,6 +41,12 @@ public class TeacherInsertController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        String role = (String) req.getSession().getAttribute("role");
+        if (!"ADMIN".equals(role)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Απαγορεύεται η πρόσβαση.");
+            return;
+        }
+
         List<City> cities = null;
         try {
             cities = cityService.getAllCities();
