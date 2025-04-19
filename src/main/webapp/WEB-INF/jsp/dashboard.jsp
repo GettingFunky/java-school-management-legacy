@@ -1,27 +1,30 @@
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setHeader("Expires", "0");
-%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">-->
-</head>
-<body>
+<c:set var="pageTitle" value="Διαχείριση και προβολή Καθηγητών/Μαθητών" />
+<%@ include file="header3.jsp" %>
 
+<main class="flex-grow container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">${pageTitle}</h1>
+    </div>
 
-        <div>
-            <a href="<c:url value='${pageContext.request.contextPath}/school-app/teachers/view' />">Προβολή Καθηγητών</a>
-        </div>
+    <!-- Dashboard Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Καθηγητές -->
+        <c:if test="${sessionScope.role == 'ADMIN'}">
+            <a href="${pageContext.request.contextPath}/school-app/teachers/view"
+               class="flex items-center justify-center w-full h-28 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow transition">
+                <i class="fa-solid fa-chalkboard-teacher mr-2 text-2xl"></i> Καθηγητές
+            </a>
+        </c:if>
 
+        <!-- Μαθητές -->
+        <a href="${pageContext.request.contextPath}/school-app/dashboard"
+           class="flex items-center justify-center w-full h-28 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl shadow transition">
+            <i class="fa-solid fa-user-graduate mr-2 text-2xl"></i> Μαθητές
+        </a>
+    </div>
+</main>
 
-
-</body>
-</html>
+<%@ include file="footer2.jsp"%>
