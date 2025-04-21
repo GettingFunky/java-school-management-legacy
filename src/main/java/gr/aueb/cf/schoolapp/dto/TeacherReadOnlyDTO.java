@@ -1,8 +1,12 @@
 package gr.aueb.cf.schoolapp.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Setter
+@Getter
 public class TeacherReadOnlyDTO extends BaseTeacherDTO {
     private Integer id;
     private String uuid;
@@ -16,22 +20,6 @@ public class TeacherReadOnlyDTO extends BaseTeacherDTO {
                               String streetNum, String zipCode, Integer cityId) {
         super(firstname, lastname, vat, fatherName, phoneNum, email, street, streetNum, zipCode, cityId);
         this.id = id;
-        this.uuid = uuid;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
