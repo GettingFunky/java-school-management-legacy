@@ -56,7 +56,7 @@ public class StudentDAOImpl implements IStudentDAO {
     @Override
     public Student update(Student student) throws StudentDAOException {
 
-        String sql = "UPDATE teachers SET firstname = ?, lastname = ?, fathername = ?, phone_num = ?," +
+        String sql = "UPDATE students SET firstname = ?, lastname = ?, fathername = ?, phone_num = ?," +
                 " email = ?, street = ?, street_num = ?, zipcode = ?, city_id = ?, birthdate = ?," +
                 " updated_at = ? WHERE id = ?";
         Student updatedStudent;
@@ -103,7 +103,7 @@ public class StudentDAOImpl implements IStudentDAO {
         } catch (SQLException e) {
             // e.printStackTrace();
             // logging
-            throw new StudentDAOException("SQL error in delete with teacher id: " + id);
+            throw new StudentDAOException("SQL error in delete with student id: " + id);
         }
     }
 
