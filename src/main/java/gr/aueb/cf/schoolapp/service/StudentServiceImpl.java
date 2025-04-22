@@ -5,7 +5,6 @@ import gr.aueb.cf.schoolapp.dto.*;
 import gr.aueb.cf.schoolapp.exceptions.*;
 import gr.aueb.cf.schoolapp.mapper.Mapper;
 import gr.aueb.cf.schoolapp.model.Student;
-import gr.aueb.cf.schoolapp.model.Teacher;
 
 import java.util.List;
 import java.util.Optional;
@@ -152,6 +151,4 @@ public class StudentServiceImpl implements IStudentService{
             throw e;
         }
     }
-}
-
 }
