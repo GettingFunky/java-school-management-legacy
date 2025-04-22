@@ -10,7 +10,7 @@
             <i class="fas fa-check-circle text-success-500 text-3xl mr-3"></i>
             <h1 class="text-2xl font-bold text-gray-800">Επιτυχής Εισαγωγή</h1>
         </div>
-        <p class="text-gray-700 text-lg mb-4">Ο καθηγητής με κωδικό <strong>${requestScope.id}</strong> καταχωρίστηκε επιτυχώς.</p>
+        <p class="text-gray-700 text-lg mb-4">Ο καθηγητής με κωδικό <strong>${sessionScope.teacherInfo.id}</strong> καταχωρίστηκε επιτυχώς.</p>
 
         <div class="flex justify-end">
             <a href="${pageContext.request.contextPath}/school-app/teachers/view"
