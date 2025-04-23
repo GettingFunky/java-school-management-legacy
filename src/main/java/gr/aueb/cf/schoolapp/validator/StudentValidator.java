@@ -1,17 +1,19 @@
 package gr.aueb.cf.schoolapp.validator;
 
+import gr.aueb.cf.schoolapp.dto.BaseStudentDTO;
 import gr.aueb.cf.schoolapp.dto.BaseTeacherDTO;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TeacherValidator<T> {
+public class StudentValidator<T> {
 
-    private TeacherValidator() {
+    private StudentValidator() {
 
     }
 
-    public static <T extends BaseTeacherDTO> Map<String, String> validate(T dto) {
+    public static <T extends BaseStudentDTO> Map<String, String> validate(T dto) {
         Map<String, String> errors = new HashMap<>();
 
         if (dto.getFirstname().length() < 2 || dto.getFirstname().length() > 32) {
@@ -30,14 +32,6 @@ public class TeacherValidator<T> {
             errors.put("lastname", "Το επώνυμο δεν πρέπει να περιλαμβάνει κενά");
         }
 
-        if (dto.getVat().length() < 9 || dto.getVat().length() > 12) {
-            errors.put("vat", "Το ΑΦΜ πρέπει να είναι μεταξύ 9 και 12 ψηφία");
-        }
-
-        if (dto.getVat().matches("^.*\\s+.*$")) {
-            errors.put("vat", "Το ΑΦΜ δεν πρέπει να περιλαμβάνει κενά");
-        }
-
         if (dto.getFatherName().length() < 2 || dto.getFatherName().length() > 32) {
             errors.put("fathername", "Το Επώνυμο Πατρός πρέπει να είναι μεταξύ 2 και 32 ψηφία");
         }
@@ -54,9 +48,18 @@ public class TeacherValidator<T> {
             errors.put("phoneNum", "Ο Αριθμός Τηλεφώνου δεν πρέπει να περιλαμβάνει κενά");
         }
 
+        if (dto.getBirthDate().isBefore(LocalDate.of(1900, 1, 1))) {
+            errors.put("birthdate", "Η ημερομηνία γέννησης πρέπει να είναι μεταξύ 1900 και 2024");
+        }
+
+        if (dto.getBirthDate().isAfter(LocalDate.of(2025, 1, 1))) {
+            errors.put("birthdate", "Η ημερομηνία γέννησης πρέπει να είναι μεταξύ 1900 και 2024");
+        }
+
 
         // More validations
 
         return errors;
     }
 }
+
