@@ -2,14 +2,12 @@ package gr.aueb.cf.schoolapp.controller;
 
 import gr.aueb.cf.schoolapp.dao.*;
 import gr.aueb.cf.schoolapp.dto.StudentInsertDTO;
-import gr.aueb.cf.schoolapp.dto.TeacherInsertDTO;
-import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
-import gr.aueb.cf.schoolapp.exceptions.TeacherAlreadyExistsException;
-import gr.aueb.cf.schoolapp.exceptions.TeacherDAOException;
+import gr.aueb.cf.schoolapp.dto.StudentReadOnlyDTO;
+import gr.aueb.cf.schoolapp.exceptions.StudentAlreadyExistsException;
+import gr.aueb.cf.schoolapp.exceptions.StudentDAOException;
 import gr.aueb.cf.schoolapp.model.City;
 import gr.aueb.cf.schoolapp.service.*;
 import gr.aueb.cf.schoolapp.validator.StudentValidator;
-import gr.aueb.cf.schoolapp.validator.TeacherValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,37 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class StudentInsertController {
-}
-
-package gr.aueb.cf.schoolapp.controller;
-
-import gr.aueb.cf.schoolapp.dao.CityDAOImpl;
-import gr.aueb.cf.schoolapp.dao.ICityDAO;
-import gr.aueb.cf.schoolapp.dao.ITeacherDAO;
-import gr.aueb.cf.schoolapp.dao.TeacherDAOImpl;
-import gr.aueb.cf.schoolapp.dto.TeacherInsertDTO;
-import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
-import gr.aueb.cf.schoolapp.exceptions.TeacherAlreadyExistsException;
-import gr.aueb.cf.schoolapp.exceptions.TeacherDAOException;
-import gr.aueb.cf.schoolapp.model.City;
-import gr.aueb.cf.schoolapp.service.CityServiceImpl;
-import gr.aueb.cf.schoolapp.service.ICityService;
-import gr.aueb.cf.schoolapp.service.ITeacherService;
-import gr.aueb.cf.schoolapp.service.TeacherServiceImpl;
-import gr.aueb.cf.schoolapp.validator.TeacherValidator;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +47,7 @@ public class StudentInsertController extends HttpServlet {
                 req.getSession().removeAttribute("formData");
             }
 
-            req.getRequestDispatcher("/WEB-INF/jsp/teacher-insert3.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/student-insert3.jsp").forward(req, resp);
 
         } catch (SQLException e) {
             handleError(req, resp, "Error retrieving cities: " + e.getMessage());
@@ -88,6 +56,9 @@ public class StudentInsertController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LocalDate birthDate = LocalDate.parse(req.getParameter("birthDate")); // προσοχή στο format!
+
+
         // Create a map to hold all form data and errors
         Map<String, Object> formData = new HashMap<>();
 
@@ -101,8 +72,8 @@ public class StudentInsertController extends HttpServlet {
                 req.getParameter("street"),
                 req.getParameter("streetNum"),
                 req.getParameter("zipcode"),
-                req.getParameter("cityId") != null ? Integer.parseInt(req.getParameter("cityId")) : 0
-                req.getParameter("birthDate")
+                req.getParameter("cityId") != null ? Integer.parseInt(req.getParameter("cityId")) : 0,
+                birthDate
         );
 
         formData.put("insertDTO", insertDTO);
@@ -118,26 +89,26 @@ public class StudentInsertController extends HttpServlet {
 
                 // Persist form data in session for the redirect
                 req.getSession().setAttribute("formData", formData);
-                resp.sendRedirect(req.getContextPath() + "/school-app/teachers/insert");
+                resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
                 return;
             }
 
             // Call service if validation passed
-            TeacherReadOnlyDTO readOnlyDTO = teacherService.insertTeacher(insertDTO);
-            req.getSession().setAttribute("teacherInfo", readOnlyDTO);
+            StudentReadOnlyDTO readOnlyDTO = studentService.insertStudent(insertDTO);
+            req.getSession().setAttribute("studentInfo", readOnlyDTO);
 
             // Clear any previous form data from session
 
-            resp.sendRedirect(req.getContextPath() + "/school-app/teacher-inserted");
+            resp.sendRedirect(req.getContextPath() + "/school-app/student-inserted");
 
-        } catch (IOException | TeacherDAOException | TeacherAlreadyExistsException e) {
+        } catch (IOException | StudentDAOException | StudentAlreadyExistsException e) {
             formData.put("errorMessage", e.getMessage());
             req.getSession().setAttribute("formData", formData);
-            resp.sendRedirect(req.getContextPath() + "/school-app/teachers/insert");
+            resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
         } catch (NumberFormatException e) {
             formData.put("errorMessage", "Invalid city selection");
             req.getSession().setAttribute("formData", formData);
-            resp.sendRedirect(req.getContextPath() + "/school-app/teachers/insert");
+            resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
         }
     }
 
