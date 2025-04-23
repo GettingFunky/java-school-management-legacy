@@ -26,12 +26,6 @@ public class StudentsViewController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (!request.getSession().getAttribute("role").equals("ADMIN")) {
-            request.getRequestDispatcher("/WEB-INF/jsp/auth-failed.jsp").forward(request, response);
-            return;
-        }
-
-
         List<StudentReadOnlyDTO> studentReadOnlyDTOS;
         String filterFirstname = request.getParameter("firstname");
         filterFirstname = filterFirstname == null ? "" : filterFirstname;
