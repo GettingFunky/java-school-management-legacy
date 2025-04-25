@@ -56,7 +56,12 @@ public class StudentInsertController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LocalDate birthDate = LocalDate.parse(req.getParameter("birthDate")); // προσοχή στο format!
+        String birthDateStr = req.getParameter("birthDate");
+        LocalDate birthDate = null;
+
+        if (birthDateStr != null && !birthDateStr.trim().isEmpty()) {
+            birthDate = LocalDate.parse(birthDateStr);  // προσοχή στο format αν αλλάξεις locale
+        }
 
 
         // Create a map to hold all form data and errors

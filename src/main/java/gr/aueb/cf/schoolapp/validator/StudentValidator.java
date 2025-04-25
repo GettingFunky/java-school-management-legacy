@@ -1,7 +1,6 @@
 package gr.aueb.cf.schoolapp.validator;
 
 import gr.aueb.cf.schoolapp.dto.BaseStudentDTO;
-import gr.aueb.cf.schoolapp.dto.BaseTeacherDTO;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -48,16 +47,13 @@ public class StudentValidator<T> {
             errors.put("phoneNum", "Ο Αριθμός Τηλεφώνου δεν πρέπει να περιλαμβάνει κενά");
         }
 
-        if (dto.getBirthDate().isBefore(LocalDate.of(1900, 1, 1))) {
-            errors.put("birthdate", "Η ημερομηνία γέννησης πρέπει να είναι μεταξύ 1900 και 2024");
+        if (dto.getBirthDate() == null) {
+            errors.put("birthDate", "Η ημερομηνία γέννησης είναι υποχρεωτική.");
+        } else if (dto.getBirthDate().isBefore(LocalDate.of(1900, 1, 1))) {
+            errors.put("birthDate", "Η ημερομηνία γέννησης δεν μπορεί να είναι πριν το 1900.");
+        } else if (dto.getBirthDate().isAfter(LocalDate.of(2025, 1, 1))) {
+            errors.put("birthDate", "Η ημερομηνία γέννησης πρέπει να είναι μεταξύ 1900 και 2024");
         }
-
-        if (dto.getBirthDate().isAfter(LocalDate.of(2025, 1, 1))) {
-            errors.put("birthdate", "Η ημερομηνία γέννησης πρέπει να είναι μεταξύ 1900 και 2024");
-        }
-
-
-        // More validations
 
         return errors;
     }
