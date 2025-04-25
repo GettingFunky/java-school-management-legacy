@@ -20,7 +20,7 @@
         </c:if>
 
         <!-- Μαθητές -->
-        <a href="${pageContext.request.contextPath}/school-app/dashboard"
+        <a href="${pageContext.request.contextPath}/school-app/students/view"
            class="flex items-center justify-center w-full h-28 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl shadow transition">
             <i class="fa-solid fa-user-graduate mr-2 text-2xl"></i> Μαθητές
         </a>

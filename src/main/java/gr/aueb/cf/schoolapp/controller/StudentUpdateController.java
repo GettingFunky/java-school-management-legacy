@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/school-app/students/insert")
+@WebServlet("/school-app/students/update")
 public class StudentUpdateController extends HttpServlet {
     IStudentDAO studentDAO = new StudentDAOImpl();
     IStudentService studentService = new StudentServiceImpl(studentDAO);

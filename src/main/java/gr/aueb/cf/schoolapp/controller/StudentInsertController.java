@@ -47,7 +47,7 @@ public class StudentInsertController extends HttpServlet {
                 req.getSession().removeAttribute("formData");
             }
 
-            req.getRequestDispatcher("/WEB-INF/jsp/student-insert3.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/jsp/student-insert.jsp").forward(req, resp);
 
         } catch (SQLException e) {
             handleError(req, resp, "Error retrieving cities: " + e.getMessage());

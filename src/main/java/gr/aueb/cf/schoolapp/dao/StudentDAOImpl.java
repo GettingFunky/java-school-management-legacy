@@ -16,7 +16,7 @@ public class StudentDAOImpl implements IStudentDAO {
     @Override
     public Student insert(Student student) throws StudentDAOException {
         String sql = "INSERT INTO students (firstname, lastname, fathername, phone_num," +
-                " email, street, street_num, zipcode, city_id, birthdate, uuid, created_at, updated_at)" +
+                " email, street, street_num, zipcode, city_id, birth_date, uuid, created_at, updated_at)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Student insertedStudent = null;
 
@@ -57,7 +57,7 @@ public class StudentDAOImpl implements IStudentDAO {
     public Student update(Student student) throws StudentDAOException {
 
         String sql = "UPDATE students SET firstname = ?, lastname = ?, fathername = ?, phone_num = ?," +
-                " email = ?, street = ?, street_num = ?, zipcode = ?, city_id = ?, birthdate = ?," +
+                " email = ?, street = ?, street_num = ?, zipcode = ?, city_id = ?, birth_date = ?," +
                 " updated_at = ? WHERE id = ?";
         Student updatedStudent;
 
@@ -122,7 +122,7 @@ public class StudentDAOImpl implements IStudentDAO {
             if (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
             }
             return student;
@@ -148,7 +148,7 @@ public class StudentDAOImpl implements IStudentDAO {
             while (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
                 students.add(student);
             }
@@ -175,7 +175,7 @@ public class StudentDAOImpl implements IStudentDAO {
             if (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
             }
             return student;
@@ -200,7 +200,7 @@ public class StudentDAOImpl implements IStudentDAO {
             while (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
                 students.add(student);
             }
@@ -227,7 +227,7 @@ public class StudentDAOImpl implements IStudentDAO {
             if (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
             }
         } catch (SQLException e) {
@@ -254,7 +254,7 @@ public class StudentDAOImpl implements IStudentDAO {
             while (rs.next()) {
                 student = new Student(rs.getInt("id"), rs.getString("firstname"), rs.getString("lastname"),
                         rs.getString("fathername"), rs.getString("phone_num"), rs.getString("email"), rs.getString("street"),
-                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birthdate").toLocalDate(),
+                        rs.getString("street_num"), rs.getString("zipcode"), rs.getInt("city_id"), rs.getDate("birth_date").toLocalDate(),
                         rs.getString("uuid"), rs.getTimestamp("created_at").toLocalDateTime(), rs.getTimestamp("updated_at").toLocalDateTime());
                 students.add(student);
             }
