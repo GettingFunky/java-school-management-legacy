@@ -1,11 +1,11 @@
 package gr.aueb.cf.schoolapp.controller;
 
 import gr.aueb.cf.schoolapp.dao.*;
-import gr.aueb.cf.schoolapp.dto.StudentInsertDTO;
-import gr.aueb.cf.schoolapp.dto.StudentReadOnlyDTO;
-import gr.aueb.cf.schoolapp.exceptions.StudentAlreadyExistsException;
-import gr.aueb.cf.schoolapp.exceptions.StudentDAOException;
+import gr.aueb.cf.schoolapp.dto.*;
+import gr.aueb.cf.schoolapp.exceptions.*;
 import gr.aueb.cf.schoolapp.model.City;
+import gr.aueb.cf.schoolapp.model.Student;
+import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.service.*;
 import gr.aueb.cf.schoolapp.validator.StudentValidator;
 import jakarta.servlet.ServletException;
@@ -13,107 +13,192 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/school-app/students/update")
+@WebServlet("/school-app/student/update")
 public class StudentUpdateController extends HttpServlet {
+
     IStudentDAO studentDAO = new StudentDAOImpl();
     IStudentService studentService = new StudentServiceImpl(studentDAO);
     ICityDAO cityDAO = new CityDAOImpl();
     ICityService cityService = new CityServiceImpl(cityDAO);
+    StudentUpdateDTO updateDTO;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        List<City> cities = null;
+        Integer id = Integer.parseInt(req.getParameter("id").trim());
         try {
-            // Always get fresh cities list
-            List<City> cities = cityService.getAllCities();
-            req.setAttribute("cities", cities);
+            cities = cityService.getAllCities();
+            StudentReadOnlyDTO studentReadOnlyDTO = studentService.getStudentById(id);
 
-            // Check for any persisted form data from previous POST
-            if (req.getSession().getAttribute("formData") != null) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> formData = (Map<String, Object>) req.getSession().getAttribute("formData");
+// Create the correct DTO for the form
+            StudentUpdateDTO dto = new StudentUpdateDTO();
+            dto.setId(studentReadOnlyDTO.getId());
+            dto.setFirstname(studentReadOnlyDTO.getFirstname());
+            dto.setLastname(studentReadOnlyDTO.getLastname());
+            dto.setFatherName(studentReadOnlyDTO.getFatherName());
+            dto.setPhoneNum(studentReadOnlyDTO.getPhoneNum());
+            dto.setEmail(studentReadOnlyDTO.getEmail());
+            dto.setStreet(studentReadOnlyDTO.getStreet());
+            dto.setStreetNum(studentReadOnlyDTO.getStreetNum());
+            dto.setZipCode(studentReadOnlyDTO.getZipCode());
+            dto.setCityId(studentReadOnlyDTO.getCityId());
 
-                // Transfer all attributes to request scope
-                formData.forEach(req::setAttribute);
-
-                // Clear session data
-                req.getSession().removeAttribute("formData");
+// Προσοχή εδώ: μετατροπή LocalDate → String (ISO format)
+            if (studentReadOnlyDTO.getBirthDate() != null) {
+                dto.setBirthDate(LocalDate.parse(studentReadOnlyDTO.getBirthDate().toString()));
             }
 
-            req.getRequestDispatcher("/WEB-INF/jsp/student-insert.jsp").forward(req, resp);
+            req.setAttribute("cities", cities);
 
-        } catch (SQLException e) {
-            handleError(req, resp, "Error retrieving cities: " + e.getMessage());
+            if (req.getSession().getAttribute("updateDTO") != null) {
+                req.setAttribute("updateDTO", req.getSession().getAttribute("updateDTO"));
+                req.getSession().removeAttribute("updateDTO");
+            } else {
+                req.setAttribute("updateDTO", dto); // <- Σωστό αντικείμενο
+            }
+
+            req.getRequestDispatcher("/WEB-INF/jsp/student-update.jsp").forward(req, resp);
+        } catch (SQLException | StudentDAOException | StudentNotFoundException e) {
+            String errorMessage = e.getMessage();
+            req.setAttribute("errorMessage", errorMessage);
+            req.getRequestDispatcher("/WEB-INF/jsp/student-update.jsp")
+                    .forward(req, resp);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LocalDate birthDate = LocalDate.parse(req.getParameter("birthDate"));
-        // Create a map to hold all form data and errors
-        Map<String, Object> formData = new HashMap<>();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        Map<String, String> errors;
+        String firstnameMessage;
+        String lastnameMessage;
+        String fathernameMessage;
+        String phoneNumMessage;
+        String emailMessage;
+        String streetMessage;
+        String streetNumMessage;
+        String zipcodeMessage;
+        String cityIdMessage;
+        LocalDate birthDateMessage;
+        String errorMessage;
+        Student student;
 
         // Data binding
-        StudentInsertDTO insertDTO = new StudentInsertDTO(
-                req.getParameter("firstname"),
-                req.getParameter("lastname"),
-                req.getParameter("fathername"),
-                req.getParameter("phoneNum"),
-                req.getParameter("email"),
-                req.getParameter("street"),
-                req.getParameter("streetNum"),
-                req.getParameter("zipcode"),
-                req.getParameter("cityId") != null ? Integer.parseInt(req.getParameter("cityId")) : 0,
-                birthDate
-        );
 
-        formData.put("insertDTO", insertDTO);
+        String idStr = (req.getParameter("id") != null) ? req.getParameter("id").trim() : "";
+        Integer id = Integer.parseInt(idStr);
+        String firstname = (req.getParameter("firstname") != null) ? req.getParameter("firstname").trim() : "";
+        String lastname = (req.getParameter("lastname") != null) ? req.getParameter("lastname").trim() : "";
+        String fathername = (req.getParameter("fathername") != null) ? req.getParameter("fathername").trim() : "";
+        String phoneNum = (req.getParameter("phoneNum") != null) ? req.getParameter("phoneNum").trim() : "";
+        String email = (req.getParameter("email") != null) ? req.getParameter("email").trim() : "";
+        String street = (req.getParameter("street") != null) ? req.getParameter("street").trim() : "";
+        String streetNum = (req.getParameter("streetNum") != null) ? req.getParameter("streetNum").trim() : "";
+        String zipcode = (req.getParameter("zipcode") != null) ? req.getParameter("zipcode").trim() : "";
+        Integer cityId = (req.getParameter("cityId") != null) ? Integer.parseInt(req.getParameter("cityId").trim()) : 0;
+        String birthDateStr = (req.getParameter("birthDate") != null) ? req.getParameter("birthDate").trim() : "";
+        LocalDate birthDate = null;
+        if (!birthDateStr.isEmpty()) {
+            birthDate = LocalDate.parse(birthDateStr);
+        }
+        updateDTO = new StudentUpdateDTO(firstname, lastname, fathername, phoneNum,
+                email, street, streetNum, zipcode, cityId, birthDate, id);
+
 
         try {
-            // Validate DTO
-            Map<String, String> errors = StudentValidator.validate(insertDTO);
-
-            if (!errors.isEmpty()) {
-                // Add all error messages to formData
-                errors.forEach((field, message) ->
-                        formData.put(field + "Message", message));
-
-                // Persist form data in session for the redirect
-                req.getSession().setAttribute("formData", formData);
-                resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
+            // Validate dto
+            errors = StudentValidator.validate(updateDTO);
+            String role = (String) req.getSession().getAttribute("role");
+            if (!"ADMIN".equals(role)) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Απαγορεύεται η πρόσβαση.");
                 return;
             }
 
-            // Call service if validation passed
-            StudentReadOnlyDTO readOnlyDTO = studentService.insertStudent(insertDTO);
-            req.getSession().setAttribute("studentInfo", readOnlyDTO);
+            if (!errors.isEmpty()) {
+                firstnameMessage = errors.getOrDefault("firstname", "");
+                lastnameMessage = errors.getOrDefault("lastname", "");
+                fathernameMessage = errors.getOrDefault("fathername", "");
+                phoneNumMessage = errors.getOrDefault("phoneNum", "");
+                // more ...
 
-            // Clear any previous form data from session
+                req.getSession().setAttribute("firstnameMessage", firstnameMessage);
+                req.getSession().setAttribute("lastnameMessage", lastnameMessage);
 
-            resp.sendRedirect(req.getContextPath() + "/school-app/student-inserted");
+                req.getSession().setAttribute("fathernameMessage", fathernameMessage);
+                req.getSession().setAttribute("phoneNumMessage", phoneNumMessage);
+                req.getSession().setAttribute("updateDTO", updateDTO);
+//                req.getRequestDispatcher("/WEB-INF/jsp/teacher-update.jsp")
+//                        .forward(req, resp);
+                resp.sendRedirect(req.getContextPath() + "/school-app/students/update?id=" + id);
+                return;
+            }
 
-        } catch (IOException | StudentDAOException | StudentAlreadyExistsException e) {
-            formData.put("errorMessage", e.getMessage());
-            req.getSession().setAttribute("formData", formData);
-            resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
-        } catch (NumberFormatException e) {
-            formData.put("errorMessage", "Invalid city selection");
-            req.getSession().setAttribute("formData", formData);
-            resp.sendRedirect(req.getContextPath() + "/school-app/students/insert");
+            // Call the service
+
+            StudentReadOnlyDTO readOnlyDTO = studentService.updateStudent(id, updateDTO);
+            HttpSession session = req.getSession(false);
+            session.setAttribute("studentInfo", readOnlyDTO);
+            // PRG Pattern
+            resp.sendRedirect(req.getContextPath() + "/school-app/student-updated");
+        } catch (StudentDAOException | StudentAlreadyExistsException | StudentNotFoundException e) {
+            errorMessage = e.getMessage();
+            req.setAttribute("errorMessage", errorMessage);
+            req.getRequestDispatcher("/WEB-INF/jsp/student-insert.jsp")
+                    .forward(req, resp);
         }
+
+//        Integer id = Integer.parseInt(req.getParameter("id").trim());
+//        String firstname = req.getParameter("firstname").trim();
+//        String lastname = req.getParameter("lastname").trim();
+//
+//        TeacherUpdateDTO updateDTO = new TeacherUpdateDTO(id, firstname, lastname);
+//        Map<String, String> errors;
+//        String firstnameMessage;
+//        String lastnameMessage;
+//        String errorMessage;
+//        Teacher teacher;
+//
+//        try {
+//            // Validate dto
+//            errors = TeacherValidator.validate(updateDTO);
+//
+//            if (!errors.isEmpty()) {
+//                firstnameMessage = errors.getOrDefault("firstname", "");
+//                lastnameMessage = errors.getOrDefault("lastname", "");
+//
+//                req.setAttribute("firstnameMessage", firstnameMessage);
+//                req.setAttribute("lastnameMessage", lastnameMessage);
+//                req.setAttribute("updateDTO", updateDTO);
+//                req.getRequestDispatcher("/WEB-INF/jsp/teacher-update.jsp")
+//                        .forward(req, resp);
+//                return;
+//            }
+//
+//            // Call the service
+//            teacher = teacherService.updateTeacher(updateDTO);
+//            TeacherReadOnlyDTO readOnlyDTO = mapToReadOnlyDTO(teacher);
+//            req.setAttribute("teacherInfo", readOnlyDTO);
+//            req.getRequestDispatcher("/WEB-INF/jsp/teacher-updated.jsp")
+//                    .forward(req, resp);
+//        } catch (TeacherNotFoundException | TeacherDAOException e) {
+//            errorMessage = e.getMessage();
+//            req.setAttribute("errorMessage", errorMessage);
+//            req.getRequestDispatcher("/WEB-INF/jsp/teacher-update.jsp")
+//                    .forward(req, resp);
+//        }
     }
 
-    private void handleError(HttpServletRequest req, HttpServletResponse resp, String message)
-            throws ServletException, IOException {
-        req.setAttribute("errorMessage", message);
-        req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);
-    }
+//    private TeacherReadOnlyDTO mapToReadOnlyDTO(Teacher teacher) {
+//        return new TeacherReadOnlyDTO(teacher.getId(), teacher.getFirstname(), teacher.getLastname());
+//    }
 }

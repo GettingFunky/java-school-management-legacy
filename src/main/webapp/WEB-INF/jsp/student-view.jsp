@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <!-- VAT and Father's Name -->
+            <!-- Birth Date and Father's Name -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   <div>
                                       <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1">Ημερομηνία Γέννησης</label>

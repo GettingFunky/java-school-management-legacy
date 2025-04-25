@@ -2,12 +2,12 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-<c:set var="pageTitle" value="Εισαγωγή Μαθητή" />
+<c:set var="pageTitle" value="Ενημέρωση Στοιχείων Μαθητή" />
 <%@ include file="header3.jsp" %>
 
 <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Εισαγωγή Μαθητή</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Ενημέρωση Στοιχείων Μαθητή</h1>
 
         <!-- Error Message -->
         <c:if test="${not empty requestScope.errorMessage or not empty sessionScope.errorMessage}">
@@ -16,15 +16,20 @@
             </div>
         </c:if>
 
-        <!-- Student Form -->
+        <!-- Students Form -->
         <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-            <form method="POST" action="${pageContext.request.contextPath}/school-app/students/insert" class="space-y-6">
+            <form method="POST" action="${pageContext.request.contextPath}/school-app/student/update" class="space-y-6">
+
+                <!--Hidden ID -->
+               <input type="hidden" name="id" value="${updateDTO.id}" />
+
+
                 <!-- Name Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Όνομα</label>
                         <input id="firstname" name="firstname" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.firstname ? requestScope.insertDTO.firstname : '')}"
+                               value="${fn:escapeXml(updateDTO.firstname)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.firstnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Όνομα">
                         <c:if test="${not empty requestScope.firstnameMessage}">
@@ -34,7 +39,7 @@
                     <div>
                         <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο</label>
                         <input id="lastname" name="lastname" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.lastname ? requestScope.insertDTO.lastname : '')}"
+                               value="${fn:escapeXml(updateDTO.lastname)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.lastnameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Επώνυμο">
                         <c:if test="${not empty requestScope.lastnameMessage}">
@@ -43,24 +48,24 @@
                     </div>
                 </div>
 
-                <!-- Birth Date and Father's Name -->
+                <!-- VAT and Father's Name -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1">Ημερομηνία Γέννησης</label>
-                        <input id="birthDate" name="birthDate" type="date"
-                               value="${not empty requestScope.insertDTO.birthDate ? requestScope.insertDTO.birthDate : ''}"
-                               class="w-full px-3 py-2 border ${not empty requestScope.birthDateMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <c:if test="${not empty requestScope.birthDateMessage}">
-                            <p class="mt-1 text-sm text-red-600">${requestScope.birthDateMessage}</p>
-                        </c:if>
-                    </div>
+                          <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-1">Ημερομηνία Γέννησης</label>
+                          <input id="birthDate" name="birthDate" type="date"
+                                 value="${updateDTO.birthDate}"
+                                 class="w-full px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                          <c:if test="${not empty requestScope.birthDateMessage}">
+                              <p class="mt-1 text-sm text-red-600">${requestScope.birthDateMessage}</p>
+                          </c:if>
+                      </div>
                     <div>
                         <label for="fathername" class="block text-sm font-medium text-gray-700 mb-1">Επώνυμο Πατρός</label>
                         <input id="fathername" name="fathername" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.fatherName ? requestScope.insertDTO.fatherName : '')}"
+                               value="${fn:escapeXml(updateDTO.fatherName)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.fathernameMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Επώνυμο Πατρός">
-                        <c:if test="${not empty requestScope.fathernameMessage}">
+                        <c:if test="${not empty requestScope.fatherNameMessage}">
                             <p class="mt-1 text-sm text-red-600">${requestScope.fathernameMessage}</p>
                         </c:if>
                     </div>
@@ -71,7 +76,7 @@
                     <div>
                         <label for="phoneNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός Τηλεφώνου</label>
                         <input id="phoneNum" name="phoneNum" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.phoneNum ? requestScope.insertDTO.phoneNum : '')}"
+                               value="${fn:escapeXml(updateDTO.phoneNum)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.phoneNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Αριθμός Τηλεφώνου">
                         <c:if test="${not empty requestScope.phoneNumMessage}">
@@ -81,7 +86,7 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
                         <input id="email" name="email" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.email ? requestScope.insertDTO.email : '')}"
+                               value="${fn:escapeXml(updateDTO.email)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.emailMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="E-mail">
                         <c:if test="${not empty requestScope.emailMessage}">
@@ -95,7 +100,7 @@
                     <div>
                         <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Οδός</label>
                         <input id="street" name="street" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.street ? requestScope.insertDTO.street : '')}"
+                               value="${fn:escapeXml(updateDTO.street)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.streetMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Οδός">
                         <c:if test="${not empty requestScope.streetMessage}">
@@ -105,7 +110,7 @@
                     <div>
                         <label for="streetNum" class="block text-sm font-medium text-gray-700 mb-1">Αριθμός</label>
                         <input id="streetNum" name="streetNum" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.streetNum ? requestScope.insertDTO.streetNum : '')}"
+                               value="${fn:escapeXml(updateDTO.streetNum)}"
                                class="w-full px-3 py-2 border ${not empty requestScope.streetNumMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                placeholder="Αριθμός">
                         <c:if test="${not empty requestScope.streetNumMessage}">
@@ -114,43 +119,41 @@
                     </div>
                 </div>
 
-                <!-- Zip Code and City -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">ΤΚ</label>
-                        <input id="zipcode" name="zipcode" type="text"
-                               value="${fn:escapeXml(not empty requestScope.insertDTO.zipCode ? requestScope.insertDTO.zipCode : '')}"
-                               class="w-full px-3 py-2 border ${not empty requestScope.zipcodeMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                               placeholder="ΤΚ">
-                        <c:if test="${not empty requestScope.zipcodeMessage}">
-                            <p class="mt-1 text-sm text-red-600">${requestScope.zipcodeMessage}</p>
-                        </c:if>
-                    </div>
-                    <div>
-                        <label for="cityId" class="block text-sm font-medium text-gray-700 mb-1">Πόλη</label>
-                        <select id="cityId" name="cityId"
-                                class="w-full px-3 py-2 border ${not empty requestScope.cityIdMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled ${empty requestScope.insertDTO.cityId ? 'selected' : ''}>
-                                Επιλέξτε Πόλη
-                            </option>
-                            <c:forEach items="${requestScope.cities}" var="city">
-                                <option value="${city.id}"
-                                        ${city.id eq requestScope.insertDTO.cityId ? 'selected' : ''}>
-                                    ${fn:escapeXml(city.name)}
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <c:if test="${not empty requestScope.cityIdMessage}">
-                            <p class="mt-1 text-sm text-red-600">${requestScope.cityIdMessage}</p>
-                        </c:if>
-                    </div>
-                </div>
+<!-- Zip Code and City -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">ΤΚ</label>
+                <input id="zipcode" name="zipcode" type="text"
+                       value="${fn:escapeXml(updateDTO.zipCode)}"
+                       class="w-full px-3 py-2 border ${not empty requestScope.zipcodeMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                       placeholder="ΤΚ">
+                <c:if test="${not empty requestScope.zipcodeMessage}">
+                    <p class="mt-1 text-sm text-red-600">${requestScope.zipcodeMessage}</p>
+                </c:if>
+            </div>
+            <div>
+                <label for="cityId" class="block text-sm font-medium text-gray-700 mb-1">Πόλη</label>
+                <select id="cityId" name="cityId"
+                        class="w-full px-3 py-2 border ${not empty requestScope.cityIdMessage ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <c:forEach items="${requestScope.cities}" var="city">
+                        <option value="${city.id}"
+                                <c:if test="${city.id == updateDTO.cityId}">selected</c:if>>
+                            ${fn:escapeXml(city.name)}
+                        </option>
+                    </c:forEach>
+                </select>
+                <c:if test="${not empty requestScope.cityIdMessage}">
+                    <p class="mt-1 text-sm text-red-600">${requestScope.cityIdMessage}</p>
+                </c:if>
+            </div>
+        </div>
+
 
                 <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit"
                             class="w-full md:w-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                        Εισαγωγή
+                        Ενημέρωση
                     </button>
                 </div>
             </form>
