@@ -15,7 +15,7 @@
 
         <c:if test="${sessionScope.role == 'ADMIN'}">
             <a href="${pageContext.request.contextPath}/school-app/students/insert"
-               class="inline-flex items-center px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+               class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
                 <i class="fas fa-plus mr-2"></i>
                 Εισαγωγή Μαθητή
             </a>
